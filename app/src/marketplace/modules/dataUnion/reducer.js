@@ -8,6 +8,7 @@ import {
     GET_DATA_UNION_REQUEST,
     GET_DATA_UNION_SUCCESS,
     GET_DATA_UNION_FAILURE,
+    GET_DATA_UNION_STATS_SUCCESS,
     GET_ALL_DATA_UNIONS_REQUEST,
     GET_ALL_DATA_UNIONS_SUCCESS,
     GET_ALL_DATA_UNIONS_FAILURE,
@@ -64,6 +65,20 @@ const reducer: (DataUnionState) => DataUnionState = handleActions({
         fetchingStats: false,
         statsError: action.payload.error,
     }),
+
+    [GET_DATA_UNION_STATS_SUCCESS]: (state: DataUnionState, action: DataUnionIdAction) => {
+        const ids = [
+            ...new Set([
+                ...state.ids,
+                action.payload.id,
+            ]),
+        ]
+
+        return {
+            ...state,
+            ids,
+        }
+    },
 
 }, initialState)
 

@@ -13,6 +13,7 @@ import { isDataUnionProduct, isPaidProduct } from '$mp/utils/product'
 import useFilePreview from '$shared/hooks/useFilePreview'
 import { isEthereumAddress } from '$mp/utils/validate'
 import { ago } from '$shared/utils/time'
+import { selectDataUnionStats } from '$mp/modules/dataUnion/selectors'
 
 import DescriptionComponent from '$mp/components/ProductPage/Description'
 import HeroComponent from '$mp/components/Hero'
@@ -21,12 +22,13 @@ import ProductDetails from '$mp/components/ProductPage/ProductDetails'
 import StreamListing from '$mp/components/ProductPage/StreamListing'
 import Terms from '$mp/components/ProductPage/Terms'
 import ProductPageDataUnionStats from '$mp/containers/ProductPage/DataUnionStats'
-import useDataUnionStats from '$mp/containers/ProductPage/useDataUnionStats'
 import useDataUnion from '$mp/containers/ProductController/useDataUnion'
 import useContractProduct from '$mp/containers/ProductController/useContractProduct'
 import usePending from '$shared/hooks/usePending'
 import ProductPage from '$shared/components/ProductPage'
 import { MD, XL } from '$shared/utils/styled'
+
+import usePreviewStats from '$mp/containers/ProductPage/usePreviewStats'
 
 const Hero = () => {
     const product = useEditableProduct()
@@ -112,8 +114,19 @@ const DataUnionStats = () => {
     const isDataUnion = !!(product && isDataUnionProduct(product))
     const isDuDeployed = !!isDataUnion && !!product.dataUnionDeployed && isEthereumAddress(product.beneficiaryAddress)
 
-    const { stats, memberCount } = useDataUnionStats()
     const dataUnion = useDataUnion()
+    const contractProduct = useContractProduct()
+    const { subscriberCount } = contractProduct || {
+        subscriberCount: 0,
+    }
+    const { memberCount, totalEarnings } = useSelector(selectDataUnionStats) || {}
+    const { stats } = usePreviewStats({
+        created,
+        adminFee,
+        memberCount,
+        subscriberCount,
+        totalEarnings,
+    })
     const { joinPartStreamId } = dataUnion || {}
 
     const statsProps = useMemo(() => {

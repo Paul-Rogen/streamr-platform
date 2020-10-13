@@ -52,14 +52,21 @@ const StyledListContainer = styled(ListContainer)`
 `
 
 const Stats = () => {
-    const { loadDataUnion } = useController()
+    const { loadDataUnion, loadContractProductSubscription } = useController()
     const product = useProduct()
+    const { id: productId } = product
     const { stats, memberCount } = useDataUnionStats()
     const dataUnion = useDataUnion()
 
     const { joinPartStreamId } = dataUnion || {}
 
     const { dataUnionDeployed, beneficiaryAddress } = product
+
+    useEffect(() => {
+        if (productId) {
+            loadContractProductSubscription(productId)
+        }
+    }, [productId, loadContractProductSubscription])
 
     useEffect(() => {
         if (dataUnionDeployed && beneficiaryAddress) {
@@ -88,19 +95,21 @@ const Stats = () => {
         >
             <CoreHelmet title={I18n.t('userpages.title.stats')} />
             <StyledListContainer>
+                {!dataUnionDeployed && isEthereumAddress(beneficiaryAddress) && (
+                    <div className={styles.statBox}>
+                        <DataUnionPending />
+                    </div>
+                )}
                 {!!dataUnionDeployed && (
                     <React.Fragment>
                         <div className={styles.statBox}>
-                            {!dataUnionDeployed && isEthereumAddress(beneficiaryAddress) && (
-                                <DataUnionPending />
-                            )}
-                            {!!dataUnionDeployed && stats && (
+                            {stats && (
                                 <ProductStat.List items={stats} />
                             )}
                         </div>
                         <div className={styles.graphs}>
                             <div className={styles.memberCount}>
-                                {!!dataUnionDeployed && !!memberCount && (
+                                {!!memberCount && (
                                     <React.Fragment>
                                         <TimeSeriesGraph.Header>
                                             <ProductStat.Title>
@@ -120,7 +129,7 @@ const Stats = () => {
                                 )}
                             </div>
                             <div className={styles.graphBox}>
-                                {!!dataUnionDeployed && product && (
+                                {product && (
                                     <React.Fragment>
                                         <TimeSeriesGraph.Header>
                                             <ProductStat.Title>
@@ -166,10 +175,11 @@ const LoadingView = () => (
 
 const StatsWrap = () => {
     const product = useProduct()
+    const { hasLoaded } = useController()
     const { isPending: loadPending } = usePending('product.LOAD')
     const { isPending: permissionsPending } = usePending('product.PERMISSIONS')
 
-    if (!product || loadPending || permissionsPending) {
+    if (!hasLoaded || !product || loadPending || permissionsPending) {
         return <LoadingView />
     }
 

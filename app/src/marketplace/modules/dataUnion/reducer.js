@@ -17,7 +17,6 @@ import {
 import type {
     DataUnionIdAction,
     DataUnionIdsAction,
-    DataUnionErrorAction,
 } from './types'
 
 export const initialState: DataUnionState = {
@@ -41,7 +40,6 @@ const reducer: (DataUnionState) => DataUnionState = handleActions({
         fetching: false,
     }),
 
-    // [GET_DATA_UNION_FAILURE]: (state: DataUnionState, action: DataUnionErrorAction) => ({
     [GET_DATA_UNION_FAILURE]: (state: DataUnionState) => ({
         ...state,
         fetching: false,

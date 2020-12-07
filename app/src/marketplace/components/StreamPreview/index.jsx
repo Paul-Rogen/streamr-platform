@@ -381,14 +381,12 @@ const ValueCell = ({ value }) => {
         <Tooltip value="Copy">
             <Cell
                 onClick={() => {
-                    if (typeof value === 'string') {
-                        copy(value)
+                    copy(value)
 
-                        Notification.push({
-                            title: 'Field data copied to clipboard',
-                            icon: NotificationIcon.CHECKMARK,
-                        })
-                    }
+                    Notification.push({
+                        title: 'Field data copied to clipboard',
+                        icon: NotificationIcon.CHECKMARK,
+                    })
                 }}
             >
                 {value}

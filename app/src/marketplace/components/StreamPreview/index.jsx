@@ -18,6 +18,8 @@ import {
     getSecurityLevel,
     getSecurityLevelTitle,
 } from '$userpages/components/StreamPage/Edit/SecurityView'
+import Notification from '$shared/utils/Notification'
+import { NotificationIcon } from '$shared/utils/constants'
 
 const Container = styled.div`
     position: relative;
@@ -371,6 +373,29 @@ const Cell = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
 `
+
+const ValueCell = ({ value }) => {
+    const { copy } = useCopy()
+
+    return (
+        <Tooltip value="Copy">
+            <Cell
+                onClick={() => {
+                    if (typeof value === 'string') {
+                        copy(value)
+
+                        Notification.push({
+                            title: 'Field data copied to clipboard',
+                            icon: NotificationIcon.CHECKMARK,
+                        })
+                    }
+                }}
+            >
+                {value}
+            </Cell>
+        </Tooltip>
+    )
+}
 
 const TableItem = styled.div`
     align-items: center;
@@ -825,9 +850,7 @@ const StreamPreview = ({
                                         </Cell>
                                     </TableItem>
                                     <TableItem>
-                                        <Cell>
-                                            {value}
-                                        </Cell>
+                                        <ValueCell value={value} />
                                     </TableItem>
                                 </TableRow>
                             )

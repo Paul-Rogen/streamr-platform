@@ -374,11 +374,11 @@ const Cell = styled.div`
     white-space: nowrap;
 `
 
-const ValueCell = ({ value }) => {
+const UnstyledValueCell = ({ value, className }) => {
     const { copy } = useCopy()
 
     return (
-        <Tooltip value="Copy">
+        <Tooltip value="Copy" className={className}>
             <Cell
                 onClick={() => {
                     copy(value)
@@ -395,10 +395,15 @@ const ValueCell = ({ value }) => {
     )
 }
 
+const ValueCell = styled(UnstyledValueCell)`
+    min-width: 0;
+`
+
 const TableItem = styled.div`
     align-items: center;
     display: flex;
     height: 56px;
+    min-width: 0;
 `
 
 const TableRow = styled.div`

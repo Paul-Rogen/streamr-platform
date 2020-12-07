@@ -794,9 +794,7 @@ const StreamPreview = ({
                                         </Cell>
                                     </TableItem>
                                     <TableItem>
-                                        <Cell>
-                                            {JSON.stringify(data)}
-                                        </Cell>
+                                        <Cell>{JSON.stringify(data)}</Cell>
                                     </TableItem>
                                 </TableRow>
                             )
@@ -835,9 +833,7 @@ const StreamPreview = ({
                                     </Cell>
                                 </TableItem>
                                 <TableItem>
-                                    <Cell>
-                                        {formatDateTime(activeTimestamp, tz)}
-                                    </Cell>
+                                    <Cell>{formatDateTime(activeTimestamp, tz)}</Cell>
                                 </TableItem>
                             </TableRow>
                         )}
@@ -848,9 +844,7 @@ const StreamPreview = ({
                             return (
                                 <TableRow key={`${k}${value}`}>
                                     <TableItem>
-                                        <Cell>
-                                            {k}
-                                        </Cell>
+                                        <Cell>{k}</Cell>
                                     </TableItem>
                                     <TableItem>
                                         <ValueCell value={value} />

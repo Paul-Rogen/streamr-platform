@@ -50,7 +50,6 @@ const ModalDialog = ({
         ) : (
             children
         )}
-        {children}
     </ReactModal2>
 )
 
